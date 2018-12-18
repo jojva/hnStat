@@ -11,8 +11,8 @@ void usage(void)
 
 int main(int argc, char* argv[])
 {
-    CApp App;
-    bool bResult = App.ParseCommandLine(argc, argv);
+    CApp App(argc, argv);
+    bool bResult = App.IsParseOk();
     if (bResult)
     {
         bResult = App.Run();
