@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+techtest
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+
+# TSV files
+*.tsv
