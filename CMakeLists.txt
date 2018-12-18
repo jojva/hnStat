@@ -7,9 +7,14 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set (SOURCE_FILES
    main.cpp
+   App.cpp
 )
 
-add_executable(techtest ${SOURCE_FILES})
+set (HEADER_FILES
+   App.h
+)
+
+add_executable(techtest ${SOURCE_FILES} ${HEADER_FILES})
 
 target_link_libraries(
    techtest
