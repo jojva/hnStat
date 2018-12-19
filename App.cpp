@@ -53,8 +53,31 @@ bool CApp::Run(void)
     std::cout << "\tmNbTopQueries: " << mNbTopQueries << std::endl;
     std::cout << "\tmFrom: " << mFrom << std::endl;
     std::cout << "\tmTo: " << mTo << std::endl;
-    
+
+    switch (mSubcommand)
+    {
+        case SubcommandDistinct:
+            RunDistinct();
+            break;
+        case SubcommandTop:
+            RunTop();
+            break;
+        case SubcommandNone:
+        default:
+            break;
+    }
+
     return true;
+}
+
+void CApp::RunDistinct(void)
+{
+    // TODO
+}
+
+void CApp::RunTop(void)
+{
+    // TODO
 }
 
 bool CApp::ParseSubcommandDistinct(int argc, char* argv[])

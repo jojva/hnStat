@@ -17,6 +17,9 @@ public:
     bool Run(void);
 
 private:
+    void RunDistinct(void);
+    void RunTop(void);
+
     bool ParseSubcommandDistinct(int argc, char* argv[]);
     bool ParseSubcommandTop(int argc, char* argv[]);
 
