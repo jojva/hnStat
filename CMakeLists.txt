@@ -7,11 +7,14 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set (SOURCE_FILES
    main.cpp
-   App.cpp
+   Distinct.cpp
+   Top.cpp
 )
 
 set (HEADER_FILES
-   App.h
+   ISubcommand.h
+   Distinct.h
+   Top.h
 )
 
 add_executable(techtest ${SOURCE_FILES} ${HEADER_FILES})
