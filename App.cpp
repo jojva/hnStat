@@ -1,6 +1,13 @@
 #include "App.h"
 
+#include <algorithm>
+#include <fstream>
 #include <iostream>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 CApp::CApp(int argc, char* argv[])
     : mbParseOk (true)
@@ -72,12 +79,90 @@ bool CApp::Run(void)
 
 void CApp::RunDistinct(void)
 {
-    // TODO
+    std::ifstream File(mInputFile);
+    int Timestamp;
+    std::string SearchString;
+
+    // 0° Dumb vector-filling (only for benchmark reference)
+    // std::vector<std::string> Queries;
+    // while (File >> Timestamp >> SearchString)
+    // {
+    //     Queries.push_back(SearchString);
+    // }
+
+    // 1° Fill a vector with everything, then sort, then eliminate duplicates
+    // std::vector<std::string> Queries;
+    // while (File >> Timestamp >> SearchString)
+    // {
+    //     Queries.push_back(SearchString);
+    // }
+    // std::sort(Queries.begin(), Queries.end());
+    // Queries.erase(std::unique(Queries.begin(), Queries.end() ), Queries.end());
+
+    // 2° Use an std::set
+    // std::set<std::string> Queries;
+    // while (File >> Timestamp >> SearchString)
+    // {
+    //     Queries.insert(SearchString);
+    // }
+
+    // 3° Use an std::unordered_set (fastest)
+    std::unordered_set<std::string> Queries;
+    while (File >> Timestamp >> SearchString)
+    {
+        Queries.insert(SearchString);
+    }
+
+    std::cout << Queries.size() << std::endl;
 }
 
 void CApp::RunTop(void)
 {
-    // TODO
+    std::ifstream File(mInputFile);
+    int Timestamp;
+    std::string SearchString;
+
+    // 1° Use an std::map
+    // std::map<std::string, int> Queries;
+    // while (File >> Timestamp >> SearchString)
+    // {
+    //     // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+    //     Queries[SearchString]++;
+    // }
+
+    // 2° Use an std::unordered_map (fastest)
+    std::unordered_map<std::string, int> Queries;
+    while (File >> Timestamp >> SearchString)
+    {
+        // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+        Queries[SearchString]++;
+    }
+
+    // Copy the map into a vector for later sorting
+    std::vector<std::pair<std::string, int>> Results;
+    for (auto itQuery: Queries)
+    {
+        Results.push_back(itQuery);
+    }
+
+    // Describe the sorting compare function, then actually sort the queries
+    auto QuerySorter = [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) -> bool
+    {
+       return a.second > b.second;
+    };
+    // TODO: Is "Results.begin() + mNbTopQueries" safe?
+    std::partial_sort(Results.begin(), Results.begin() + mNbTopQueries, Results.end(), QuerySorter);
+
+    int Count = 0;
+    for (auto itResult: Results)
+    {
+        Count++;
+        std::cout << itResult.second << " " << itResult.first << std::endl;
+        if (Count == mNbTopQueries)
+        {
+            break;
+        }
+    }
 }
 
 bool CApp::ParseSubcommandDistinct(int argc, char* argv[])
