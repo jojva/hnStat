@@ -21,35 +21,35 @@ CTop::~CTop(void)
 
 bool CTop::ParseCommandLine(int argc, char* argv[])
 {
-    // TODO: check that argc is big enough
     std::string NbTopQueries = argv[2];
-    // TODO: try/catch
-    mNbTopQueries = stoi(NbTopQueries);
-    for (int Index = 3; Index < argc; Index++)
+    try
     {
-        std::string Argument = argv[Index];
-        if (Argument == "--from")
+        mNbTopQueries = stoi(NbTopQueries);
+        for (int Index = 3; Index < argc; Index++)
         {
-            Index++;
-            // TODO check that argc is big enough
-            std::string Value = argv[Index];
-            // TODO: try/catch
-            mFrom = stoi(Value);
-        }
-        else if (Argument == "--to")
-        {
-            Index++;
-            // TODO check that argc is big enough
-            std::string Value = argv[Index];
-            // TODO: try/catch
-            mTo = stoi(Value);
-        }
-        else
-        {
-            mInputFile = argv[Index];
+            std::string Argument = argv[Index];
+            if (Argument == "--from")
+            {
+                Index++;
+                std::string Value = argv[Index];
+                mFrom = stoul(Value);
+            }
+            else if (Argument == "--to")
+            {
+                Index++;
+                std::string Value = argv[Index];
+                mTo = stoul(Value);
+            }
+            else
+            {
+                mInputFile = argv[Index];
+            }
         }
     }
-    // TODO: return false if parsing goes wrong anywhere
+    catch (...)
+    {
+        return false;
+    }
     return true;
 }
 

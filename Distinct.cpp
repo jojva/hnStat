@@ -19,32 +19,33 @@ CDistinct::~CDistinct(void)
 
 bool CDistinct::ParseCommandLine(int argc, char* argv[])
 {
-    // TODO: ParseSubcommandDistinct and ParseSubcommandTop are almost the same, refactor
-    for (int Index = 2; Index < argc; Index++)
+    try
     {
-        std::string Argument = argv[Index];
-        if (Argument == "--from")
+        for (int Index = 2; Index < argc; Index++)
         {
-            Index++;
-            // TODO check that argc is big enough
-            std::string Value = argv[Index];
-            // TODO: try/catch
-            mFrom = stoi(Value);
-        }
-        else if (Argument == "--to")
-        {
-            Index++;
-            // TODO: check that argc is big enough
-            std::string Value = argv[Index];
-            // TODO: try/catch
-            mTo = stoi(Value);
-        }
-        else
-        {
-            mInputFile = argv[Index];
+            std::string Argument = argv[Index];
+            if (Argument == "--from")
+            {
+                Index++;
+                std::string Value = argv[Index];
+                mFrom = stoul(Value);
+            }
+            else if (Argument == "--to")
+            {
+                Index++;
+                std::string Value = argv[Index];
+                mTo = stoul(Value);
+            }
+            else
+            {
+                mInputFile = argv[Index];
+            }
         }
     }
-    // TODO: return false if parsing goes wrong anywhere
+    catch (...)
+    {
+        return false;
+    }
     return true;
 }
 
