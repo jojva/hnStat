@@ -49,19 +49,21 @@ bool CDistinct::ParseCommandLine(int argc, char* argv[])
 void CDistinct::Run(void)
 {
     std::ifstream File(mInputFile);
-    int Timestamp;
+    std::string Timestamp;
     std::string SearchString;
 
     // 0° Dumb vector-filling (only for benchmark reference)
     // std::vector<std::string> Queries;
-    // while (File >> Timestamp >> SearchString)
+    // while (std::getline(File, Timestamp, '\t')
+    //     && std::getline(File, SearchString, '\n'))
     // {
     //     Queries.push_back(SearchString);
     // }
 
     // 1° Fill a vector with everything, then sort, then eliminate duplicates
     // std::vector<std::string> Queries;
-    // while (File >> Timestamp >> SearchString)
+    // while (std::getline(File, Timestamp, '\t')
+    //     && std::getline(File, SearchString, '\n'))
     // {
     //     Queries.push_back(SearchString);
     // }
@@ -70,14 +72,16 @@ void CDistinct::Run(void)
 
     // 2° Use an std::set
     // std::set<std::string> Queries;
-    // while (File >> Timestamp >> SearchString)
+    // while (std::getline(File, Timestamp, '\t')
+    //     && std::getline(File, SearchString, '\n'))
     // {
     //     Queries.insert(SearchString);
     // }
 
     // 3° Use an std::unordered_set (fastest)
     std::unordered_set<std::string> Queries;
-    while (File >> Timestamp >> SearchString)
+    while (std::getline(File, Timestamp, '\t')
+        && std::getline(File, SearchString, '\n'))
     {
         Queries.insert(SearchString);
     }

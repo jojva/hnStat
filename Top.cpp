@@ -56,12 +56,13 @@ bool CTop::ParseCommandLine(int argc, char* argv[])
 void CTop::Run(void)
 {
     std::ifstream File(mInputFile);
-    int Timestamp;
+    std::string Timestamp;
     std::string SearchString;
 
     // 1° Use an std::map
     // std::map<std::string, int> Queries;
-    // while (File >> Timestamp >> SearchString)
+    // while (std::getline(File, Timestamp, '\t')
+    //     && std::getline(File, SearchString, '\n'))
     // {
     //     // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
     //     Queries[SearchString]++;
@@ -69,7 +70,8 @@ void CTop::Run(void)
 
     // 2° Use an std::unordered_map (fastest)
     std::unordered_map<std::string, int> Queries;
-    while (File >> Timestamp >> SearchString)
+    while (std::getline(File, Timestamp, '\t')
+        && std::getline(File, SearchString, '\n'))
     {
         // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
         Queries[SearchString]++;
