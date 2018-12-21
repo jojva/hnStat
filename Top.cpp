@@ -59,25 +59,90 @@ void CTop::Run(void)
     std::string Timestamp;
     std::string SearchString;
 
-    // 1° Use an std::map
-    // std::map<std::string, int> Queries;
-    // while (std::getline(File, Timestamp, '\t')
-    //     && std::getline(File, SearchString, '\n'))
-    // {
-    //     // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
-    //     Queries[SearchString]++;
-    // }
-
-    // 2° Use an std::unordered_map (fastest)
-    std::unordered_map<std::string, int> Queries;
-    while (std::getline(File, Timestamp, '\t')
-        && std::getline(File, SearchString, '\n'))
+    if (File.is_open())
     {
-        // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
-        Queries[SearchString]++;
+        // Use an std::map
+        // RunMap(File);
+
+        // Use an std::unordered_map
+        RunUnorderedMap(File);
+    }
+    else
+    {
+        std::cerr << "Could not open input file" << std::endl;
+    }
+}
+
+void CTop::RunMap(std::ifstream& File)
+{
+    std::string Timestamp;
+    std::string SearchString;
+
+    std::map<std::string, int> Queries;
+    try
+    {
+        while (std::getline(File, Timestamp, '\t')
+            && std::getline(File, SearchString, '\n'))
+        {
+            // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+            Queries[SearchString]++;
+        }
+    }
+    catch (...)
+    {
+        std::cerr << "Error reading file" << std::endl;
+        return;
     }
 
     // Copy the map into a vector for later sorting
+    std::vector<std::pair<std::string, int>> Results;
+    for (auto itQuery: Queries)
+    {
+        Results.push_back(itQuery);
+    }
+
+    // Describe the sorting compare function, then actually sort the queries
+    auto QuerySorter = [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) -> bool
+    {
+       return a.second > b.second;
+    };
+    // TODO: Is "Results.begin() + mNbTopQueries" safe?
+    std::partial_sort(Results.begin(), Results.begin() + mNbTopQueries, Results.end(), QuerySorter);
+
+    int Count = 0;
+    for (auto itResult: Results)
+    {
+        Count++;
+        std::cout << itResult.second << " " << itResult.first << std::endl;
+        if (Count == mNbTopQueries)
+        {
+            break;
+        }
+    }
+}
+
+void CTop::RunUnorderedMap(std::ifstream& File)
+{
+    std::string Timestamp;
+    std::string SearchString;
+
+    std::unordered_map<std::string, int> Queries;
+    try
+    {
+        while (std::getline(File, Timestamp, '\t')
+            && std::getline(File, SearchString, '\n'))
+        {
+            // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+            Queries[SearchString]++;
+        }
+    }
+    catch (...)
+    {
+        std::cerr << "Error reading file" << std::endl;
+        return;
+    }
+
+    // Copy the unordered_map into a vector for later sorting
     std::vector<std::pair<std::string, int>> Results;
     for (auto itQuery: Queries)
     {
