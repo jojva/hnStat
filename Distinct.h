@@ -23,8 +23,8 @@ private:
 
 private:
     std::string mInputFile;
-    int mFrom;
-    int mTo;
+    unsigned long mFrom;
+    unsigned long mTo;
 };
 
 #endif

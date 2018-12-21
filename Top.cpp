@@ -9,9 +9,9 @@
 
 CTop::CTop(void)
     : mInputFile ()
-    , mNbTopQueries (-1)
-    , mFrom (-1)
-    , mTo (-1)
+    , mNbTopQueries (0)
+    , mFrom (0)
+    , mTo (std::numeric_limits<unsigned long>::max())
 {
 }
 
@@ -84,8 +84,12 @@ void CTop::RunMap(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
-            Queries[SearchString]++;
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+                Queries[SearchString]++;
+            }
         }
     }
     catch (...)
@@ -127,8 +131,12 @@ void CTop::RunUnorderedMap(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
-            Queries[SearchString]++;
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                // This is safe as operator[] value-initializes the occurrence counter to 0 if it doesn't exist
+                Queries[SearchString]++;
+            }
         }
     }
     catch (...)

@@ -7,6 +7,9 @@
 #include <vector>
 
 CDistinct::CDistinct(void)
+    : mInputFile()
+    , mFrom(0)
+    , mTo(std::numeric_limits<unsigned long>::max())
 {
 }
 
@@ -80,7 +83,11 @@ void CDistinct::RunVectorDuplicates(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            Queries.push_back(SearchString);
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                Queries.push_back(SearchString);
+            }
         }
     }
     catch (...)
@@ -103,7 +110,11 @@ void CDistinct::RunVectorUnique(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            Queries.push_back(SearchString);
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                Queries.push_back(SearchString);
+            }
         }
     }
     catch (...)
@@ -128,7 +139,11 @@ void CDistinct::RunSet(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            Queries.insert(SearchString);
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                Queries.insert(SearchString);
+            }
         }
     }
     catch (...)
@@ -151,7 +166,11 @@ void CDistinct::RunUnorderedSet(std::ifstream& File)
         while (std::getline(File, Timestamp, '\t')
             && std::getline(File, SearchString, '\n'))
         {
-            Queries.insert(SearchString);
+            unsigned long ParsedTimestamp = stoul(Timestamp);
+            if (ParsedTimestamp >= mFrom && ParsedTimestamp <= mTo)
+            {
+                Queries.insert(SearchString);
+            }
         }
     }
     catch (...)
