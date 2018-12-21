@@ -21,9 +21,9 @@ private:
 
 private:
     std::string mInputFile;
-    int mNbTopQueries;
-    int mFrom;
-    int mTo;
+    unsigned int mNbTopQueries;
+    unsigned int mFrom;
+    unsigned int mTo;
 };
 
 #endif

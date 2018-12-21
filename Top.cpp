@@ -78,7 +78,7 @@ void CTop::RunMap(std::ifstream& File)
     std::string Timestamp;
     std::string SearchString;
 
-    std::map<std::string, int> Queries;
+    std::map<std::string, unsigned int> Queries;
     try
     {
         while (std::getline(File, Timestamp, '\t')
@@ -94,30 +94,25 @@ void CTop::RunMap(std::ifstream& File)
         return;
     }
 
-    // Copy the map into a vector for later sorting
-    std::vector<std::pair<std::string, int>> Results;
+    // Copy the map into a vector for sorting
+    std::vector<std::pair<std::string, unsigned int>> Results;
+    unsigned int MinOccurrence = 0;
     for (auto itQuery: Queries)
     {
-        Results.push_back(itQuery);
+        if (itQuery.second > MinOccurrence)
+        {
+            Results.emplace_back(itQuery);
+            std::sort(Results.begin(), Results.end(), [](auto Left, auto Right){return Left.second > Right.second;});
+            if (Results.size() > mNbTopQueries)
+            {
+                Results.pop_back();
+                MinOccurrence = Results.back().second;
+            }
+        }
     }
-
-    // Describe the sorting compare function, then actually sort the queries
-    auto QuerySorter = [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) -> bool
-    {
-       return a.second > b.second;
-    };
-    // TODO: Is "Results.begin() + mNbTopQueries" safe?
-    std::partial_sort(Results.begin(), Results.begin() + mNbTopQueries, Results.end(), QuerySorter);
-
-    int Count = 0;
     for (auto itResult: Results)
     {
-        Count++;
         std::cout << itResult.second << " " << itResult.first << std::endl;
-        if (Count == mNbTopQueries)
-        {
-            break;
-        }
     }
 }
 
@@ -126,7 +121,7 @@ void CTop::RunUnorderedMap(std::ifstream& File)
     std::string Timestamp;
     std::string SearchString;
 
-    std::unordered_map<std::string, int> Queries;
+    std::unordered_map<std::string, unsigned int> Queries;
     try
     {
         while (std::getline(File, Timestamp, '\t')
@@ -142,29 +137,24 @@ void CTop::RunUnorderedMap(std::ifstream& File)
         return;
     }
 
-    // Copy the unordered_map into a vector for later sorting
-    std::vector<std::pair<std::string, int>> Results;
+    // Copy the unordered_map into a vector for sorting
+    std::vector<std::pair<std::string, unsigned int>> Results;
+    unsigned int MinOccurrence = 0;
     for (auto itQuery: Queries)
     {
-        Results.push_back(itQuery);
+        if (itQuery.second > MinOccurrence)
+        {
+            Results.emplace_back(itQuery);
+            std::sort(Results.begin(), Results.end(), [](auto Left, auto Right){return Left.second > Right.second;});
+            if (Results.size() > mNbTopQueries)
+            {
+                Results.pop_back();
+                MinOccurrence = Results.back().second;
+            }
+        }
     }
-
-    // Describe the sorting compare function, then actually sort the queries
-    auto QuerySorter = [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) -> bool
-    {
-       return a.second > b.second;
-    };
-    // TODO: Is "Results.begin() + mNbTopQueries" safe?
-    std::partial_sort(Results.begin(), Results.begin() + mNbTopQueries, Results.end(), QuerySorter);
-
-    int Count = 0;
     for (auto itResult: Results)
     {
-        Count++;
         std::cout << itResult.second << " " << itResult.first << std::endl;
-        if (Count == mNbTopQueries)
-        {
-            break;
-        }
     }
 }
