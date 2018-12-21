@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-techtest
+hnStat
 
 # CMake
 CMakeCache.txt

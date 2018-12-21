@@ -38,8 +38,8 @@ ESubcommandType ParseSubcommand(int argc, char* argv[])
 void Usage(void)
 {
     std::cout << "Usage:" << std::endl;
-    std::cout << "\ttechtest distinct [--from <timestamp>] [--to <timestamp>] <input_file>" << std::endl;
-    std::cout << "\ttechtest top <nb_top_queries> [--from <timestamp>] [--to <timestamp>] <input_file>" << std::endl;
+    std::cout << "\thnStat distinct [--from <timestamp>] [--to <timestamp>] <input_file>" << std::endl;
+    std::cout << "\thnStat top <nb_top_queries> [--from <timestamp>] [--to <timestamp>] <input_file>" << std::endl;
 }
 
 void Execute(ISubcommand& subcommand, int argc, char* argv[])
