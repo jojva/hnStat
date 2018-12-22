@@ -36,10 +36,10 @@ All the benchmarks are performed without '--from' or '--to' options.
 
 The 'distinct' subcommand has 3 different implementations, plus a reference one.
 
-1. Filling a vector with all the search strings, without removing duplicates. This only serves as a reference point to compare the other solutions
-2. Filling a vector with all the search strings, then sorting it, then removing the consecutive duplicates with std::unique
-3. Filling an std::set, which automatically discards duplicates
-4. Filling an std::unordered_set, which does the same as std::set but with a different internal implementation
+0. Filling a vector with all the search strings, without removing duplicates. This only serves as a reference point to compare the other solutions
+1. Filling a vector with all the search strings, then sorting it, then removing the consecutive duplicates with std::unique
+2. Filling an std::set, which automatically discards duplicates
+3. Filling an std::unordered_set, which does the same as std::set but with a different internal implementation
 
 |         | 0. std::vector (does not count) | 1. std::vector + std::unique | 2. std::set | 3. std::unordered_set |
 | --- | --- | --- | --- | --- |
@@ -49,8 +49,8 @@ The 'distinct' subcommand has 3 different implementations, plus a reference one.
 
 The 'top' subcommand has 2 different implementations.
 
-3. Filling an std::map, with the key being the search string, and the value the number of occurrences
-4. Filling an std::unordered_map, same as above
+1. Filling an std::map, with the key being the search string, and the value the number of occurrences
+2. Filling an std::unordered_map, same as above
 
 |         | 1. std::map | 2. std::unordered_map
 | --- | --- | --- |
